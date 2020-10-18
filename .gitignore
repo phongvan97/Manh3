@@ -1,3 +1,5 @@
 .vs/
 packages/
-/LamDep/Assets/userImage
+LamDep/bin/
+LamDep/obj/
+LamDep/Assets/userImage/

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace LamDep.Models
 {
@@ -12,8 +13,11 @@ namespace LamDep.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PostId { get; set; }
+        [Required]
         public string Title { get; set; }
         public string Image { get; set; }
+        [AllowHtml]
+        [Required]
         public string Content { get; set; }
         public int ViewCount { get; set; }
         public DateTime? CreateDate { get; set; }

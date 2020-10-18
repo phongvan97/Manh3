@@ -20,7 +20,7 @@ namespace LamDep.Areas.Identity.Controllers
         // GET: Identity/Posts
         public ActionResult Index()
         {
-            var posts = db.Posts.Include(p => p.Author).Include(p=>p.Category).Where(p => !p.IsDeleted);
+            var posts = db.Posts.Include(p => p.Author).Include(p => p.Category).Where(p => !p.IsDeleted);
             return View(posts.ToList());
         }
 
@@ -52,8 +52,10 @@ namespace LamDep.Areas.Identity.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         public ActionResult Create(Post post, HttpPostedFileBase myfile)
         {
+
             if (myfile != null && myfile.ContentLength > 0)
             {
                 string imgName = Path.GetFileName(myfile.FileName);
@@ -68,6 +70,10 @@ namespace LamDep.Areas.Identity.Controllers
                 {
                     ModelState.AddModelError("", "Sai loại tệp");
                 }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Hãy thêm ảnh tiêu đề");
             }
             if (ModelState.IsValid)
             {
@@ -165,6 +171,26 @@ namespace LamDep.Areas.Identity.Controllers
             db.Entry(post).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+        [HttpPost]
+        public string UploadCK(HttpPostedFileBase upload)
+        {
+            if (upload != null && upload.ContentLength > 0)
+            {
+                string imgName = Path.GetFileName(upload.FileName);
+                string imgExt = Path.GetExtension(imgName);
+                if (imgExt.Equals(".jpg") || imgExt.Equals(".jpeg") || imgExt.Equals(".png"))
+                {
+                    string imgPath = Path.Combine(Server.MapPath("~/Assets/userImage"), imgName);
+                    upload.SaveAs(imgPath);
+                    return  "/Assets/userImage/" + imgName ;
+                }
+                else
+                {
+                    return "Upload Fail";
+                }
+            }
+            return "Upload Fail";
         }
     }
 }

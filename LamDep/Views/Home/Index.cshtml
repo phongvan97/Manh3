@@ -62,25 +62,29 @@
         <div class="row">
             @foreach (var cate in categories)
             {
-                <div class="col-md-6">
-                    <h2>@cate.CategoryName</h2>
-                    <div class="row cn-slider">
-                        @foreach (var post in listPostInCategory)
-                        {
-                            if (post.CategoryId == cate.CategoryId)
+                var count = listPostInCategory.Where(p => p.CategoryId == cate.CategoryId).Count();
+                if (count > 0)
+                {
+                    <div class="col-md-6">
+                        <h2>@cate.CategoryName</h2>
+                        <div class="row cn-slider">
+                            @foreach (var post in listPostInCategory)
                             {
-                                <div class="col-md-6">
-                                    <div class="cn-img">
-                                        <img src="@post.Image" height="150" />
-                                        <div class="cn-title">
-                                            <a href="@Url.Action("ViewDetail","Posts",new { area="", postId = post.PostId})">@post.Title</a>
+                                if (post.CategoryId == cate.CategoryId)
+                                {
+                                    <div class="col-md-6">
+                                        <div class="cn-img">
+                                            <img src="@post.Image" height="150" />
+                                            <div class="cn-title">
+                                                <a href="@Url.Action("ViewDetail","Posts",new { area="", postId = post.PostId})">@post.Title</a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                }
                             }
-                        }
+                        </div>
                     </div>
-                </div>
+                }
             }
         </div>
     </div>

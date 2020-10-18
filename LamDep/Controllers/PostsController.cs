@@ -129,17 +129,40 @@ namespace LamDep.Controllers
             var sameCategory = db.Posts.Where(p => !p.IsDeleted && p.IsActive && p.IsApproved && p.CategoryId == model.CategoryId).ToList();
             var mostView = db.Posts.Where(p => !p.IsDeleted && p.IsActive && p.IsApproved).OrderByDescending(p => p.ViewCount).Take(10).ToList();
             var latest = db.Posts.Where(p => !p.IsDeleted && p.IsActive && p.IsApproved).OrderByDescending(p => p.CreateDate).Take(10).ToList();
-            var categories = db.Categories.Include(c=>c.Posts).Where(c => !c.IsDeleted && c.IsActive).ToList();
+            var categories = db.Categories.Include(c => c.Posts).Where(c => !c.IsDeleted && c.IsActive).ToList();
             ViewBag.categories = categories;
             ViewBag.latest = latest;
             ViewBag.sameCategory = sameCategory;
             ViewBag.mostView = mostView;
 
+            model.ViewCount++;
+            db.Entry(model).State = EntityState.Modified;
+            db.SaveChangesAsync();
             return View(model);
         }
-        public ActionResult SearchByCategory(int? categoryId)
+        [HttpGet]
+        public ActionResult Search(int? categoryId,string SearchKey = "", string searchType = "CreateDateDesc")
         {
-            return View("ListPost");
+            var model = db.Posts.Include(p => p.Category).Where(p => !p.IsDeleted && p.IsActive && p.IsApproved)
+                     .Where(p => p.Title.Contains(SearchKey));
+            if (categoryId != null)
+            {
+                model = model.Where(p => p.CategoryId == categoryId.Value);
+            }
+            ViewBag.searchType = searchType;
+            ViewBag.category = categoryId;
+            ViewBag.searchKey = SearchKey;
+            switch (searchType)
+            {
+                case "CreateDateDesc":
+                    return View("ListPost", model.OrderByDescending(p => p.CreateDate).ToList());
+                case "ViewCountAsc":
+                    return View("ListPost", model.OrderBy(p => p.ViewCount).ToList());
+                case "ViewCountDesc":
+                    return View("ListPost", model.OrderByDescending(p => p.ViewCount).ToList());
+                default:
+                    return View("ListPost", model.OrderBy(p => p.CreateDate).ToList());
+            }
         }
     }
 }

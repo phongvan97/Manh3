@@ -1,5 +1,5 @@
 ﻿@model ICollection<Category>
 @foreach (var item in Model)
 {
-    <a href="@Url.Action("SearchByCategory","Posts",new { area="", categoryId = item.CategoryId })" class="dropdown-item">@item.CategoryName</a>
+    <a href="@Url.Action("Search","Posts",new { area="", categoryId = item.CategoryId })" class="dropdown-item">@item.CategoryName</a>
 }
