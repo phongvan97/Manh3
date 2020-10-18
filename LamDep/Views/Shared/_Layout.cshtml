@@ -1,75 +1,4 @@
-﻿@*<!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>@ViewBag.Title - My ASP.NET Application</title>
-        @Styles.Render("~/Content/css")
-        @Scripts.Render("~/bundles/modernizr")
-
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="@Url.Action("Index", "Home", new { area = "" })">
-                <img src="~/Assets/images/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
-                Bootstrap
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="@Url.Action("Index", "Home", new { area = "" })">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("About", "Home", new { area = "" })">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Contact", "Home", new { area = "" })">Contact</a>
-                    </li>
-                    @if (Request.IsAuthenticated && User.IsInRole("Admin"))
-                    {
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Admin Dashboard
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="@Url.Action("Index", "UsersAdmin", new { area = "Identity" })">Users Admin</a>
-                                <a class="dropdown-item" href="@Url.Action("Index", "RolesAdmin", new { area = "Identity" })">Roles Admin</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Manager</a>
-                            </div>
-                        </li>
-                    }
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
-        </nav>
-
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-3">
-                    <h1>Left Menu Nomal</h1>
-                </div>
-                <div class="col-md-9">
-                    @RenderBody()
-                </div>
-            </div>
-        </div>
-
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
-        @RenderSection("scripts", required: false)
-    </body>
-    </html>*@
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -96,7 +25,7 @@
 
 <body>
     <!-- Top Bar Start -->
-   
+
     <div class="top-bar">
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-dark bg-black p-0">
@@ -109,11 +38,11 @@
                         <li class="nav-item">
                             <span class="nav-link"><i class="fas fa-phone-alt"></i>+012 345 6789</span>
                         </li>
-                    
+
                         @if (Request.IsAuthenticated && User.IsInRole("Admin"))
                         {
                             <li class="nav-item ">
-                                <a class="nav-link " href="@Url.Action("Index", "UsersAdmin", new { area = "Identity" })" >
+                                <a class="nav-link " href="@Url.Action("Index", "UsersAdmin", new { area = "Identity" })">
                                     Admin Dashboard
                                 </a>
                             </li>
@@ -147,8 +76,11 @@
                 </div>
                 <div class="col-lg-3 col-md-4">
                     <div class="b-search">
-                        <input type="text" placeholder="Search">
-                        <button><i class="fa fa-search"></i></button>
+                        @using (Html.BeginForm("Search", "Posts", FormMethod.Get))
+                        {
+                            <input type="text" name="SearchKey" placeholder="Search">
+                            <button id="btn-search"><i class="fa fa-search"></i></button>
+                        }
                     </div>
                 </div>
             </div>
@@ -166,14 +98,16 @@
 
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto">
-                        <a href="index.html" class="nav-item nav-link active">Home</a>
+                        <a href="@Url.Action("Index", "Home")" class="nav-item nav-link ">Home</a>
+                        <a href="@Url.Action("Search", "Posts",new { searchType = "ViewCountDesc"})" class="nav-item nav-link ">Most View</a>
+                        <a href="@Url.Action("Search", "Posts",new { searchType = "CreateDateDesc"})" class="nav-item nav-link ">Latest</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Danh mục</a>
                             <div class="dropdown-menu">
-                                @Html.Action("LoadCategories","Home",new { area=""})
+                                @Html.Action("LoadCategories", "Home", new { area = "" })
                             </div>
                         </div>
-                       
+
                     </div>
                     <div class="social ml-auto">
                         <a href=""><i class="fab fa-twitter"></i></a>

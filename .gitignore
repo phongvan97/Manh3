@@ -1,2 +1,4 @@
 .vs/
 packages/
+LamDep/bin/
+LamDep/obj/
