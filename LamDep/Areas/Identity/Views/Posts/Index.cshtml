@@ -9,65 +9,102 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Author.FullName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
+<table id="myTable" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Author.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
 
-        <th>
-            @Html.DisplayNameFor(model => model.ViewCount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreateDate)/ @Html.DisplayNameFor(model => model.UpdatedDate)
-        </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ViewCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateDate)/ @Html.DisplayNameFor(model => model.UpdatedDate)
+            </th>
 
-        <th>
-            @Html.DisplayNameFor(model => model.IsActive)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsApproved)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Category.CategoryName)
-        </th>
-        <th></th>
-    </tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsApproved)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category.CategoryName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Author.FullName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ViewCount)
+                </td>
+                <td>
+                    @(DateTime.Compare(item.CreateDate.Value,item.UpdatedDate??DateTime.MinValue)>0?item.CreateDate:item.UpdatedDate)
+                </td>
 
-        <td>
-            @Html.DisplayFor(modelItem => item.ViewCount)
-        </td>
-        <td>
-            @(DateTime.Compare(item.CreateDate.Value,item.UpdatedDate??DateTime.MinValue)>0?item.CreateDate:item.UpdatedDate)
-        </td>
-
-        <td>
-            @Html.DisplayFor(modelItem => item.IsActive)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsApproved)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Category.CategoryName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.PostId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.PostId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.PostId })
-        </td>
-    </tr>
-}
-
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsActive)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsApproved)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.PostId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.PostId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.PostId })
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
+@section scripts{
+    <script>
+
+        jQuery.fn.dataTableExt.oSort['boolean-asc'] = function (a, b) {
+            var aChecked = $(a).is(":checked")
+            var bChecked = $(b).is(":checked")
+            return aChecked && !bChecked ? 1 : (!aChecked && bChecked ? -1 : 0)
+        };
+
+        jQuery.fn.dataTableExt.oSort['boolean-desc'] = function (a, b) {
+            var aChecked = $(a).is(":checked")
+            var bChecked = $(b).is(":checked")
+            return aChecked && !bChecked ? -1 : (!aChecked && bChecked ? 1 : 0)
+        };
+
+        $("#myTable").DataTable({
+            "aoColumns": [
+                null,
+                null,
+                null,
+                null,
+                { "sType": "boolean2" },
+                { "sType": "boolean2" },
+                null,
+                null
+            ],
+            "lengthMenu": [[5, 10, 20, -1], [5, 10, 20, "All"]],
+            "responsive": true,
+            "searching": true,
+            "ordering": true,
+            "paging": true,
+        })
+    </script>
+}

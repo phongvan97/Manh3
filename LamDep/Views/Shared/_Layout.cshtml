@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Bootstrap News Template - Free HTML Templates</title>
+    <title>Kinh nghiệm phái đẹp</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Bootstrap News Template - Free HTML Templates" name="keywords">
     <meta content="Bootstrap News Template - Free HTML Templates" name="description">
@@ -39,11 +39,11 @@
                             <span class="nav-link"><i class="fas fa-phone-alt"></i>+012 345 6789</span>
                         </li>
 
-                        @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                        @if (Request.IsAuthenticated)
                         {
                             <li class="nav-item ">
-                                <a class="nav-link " href="@Url.Action("Index", "UsersAdmin", new { area = "Identity" })">
-                                    Admin Dashboard
+                                <a class="nav-link " href="@Url.Action("Index", "Posts", new { area = "Identity" })">
+                                    User Dashboard
                                 </a>
                             </li>
                         }
