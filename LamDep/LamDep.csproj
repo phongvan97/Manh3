@@ -198,8 +198,20 @@
   <ItemGroup>
     <Content Include="Assets\adminLte\css\adminlte.min.css" />
     <Content Include="Assets\adminLte\css\all.min.css" />
+    <Content Include="Assets\adminLte\datatables-bs4\css\dataTables.bootstrap4.css" />
+    <Content Include="Assets\adminLte\datatables-bs4\css\dataTables.bootstrap4.min.css" />
+    <Content Include="Assets\adminLte\datatables-bs4\js\dataTables.bootstrap4.js" />
+    <Content Include="Assets\adminLte\datatables-bs4\js\dataTables.bootstrap4.min.js" />
+    <Content Include="Assets\adminLte\datatables-responsive\css\responsive.bootstrap4.css" />
+    <Content Include="Assets\adminLte\datatables-responsive\css\responsive.bootstrap4.min.css" />
+    <Content Include="Assets\adminLte\datatables-responsive\js\dataTables.responsive.js" />
+    <Content Include="Assets\adminLte\datatables-responsive\js\dataTables.responsive.min.js" />
+    <Content Include="Assets\adminLte\datatables-responsive\js\responsive.bootstrap4.js" />
+    <Content Include="Assets\adminLte\datatables-responsive\js\responsive.bootstrap4.min.js" />
     <Content Include="Assets\adminLte\css\icheck-bootstrap\icheck-bootstrap.css" />
     <Content Include="Assets\adminLte\css\icheck-bootstrap\icheck-bootstrap.min.css" />
+    <Content Include="Assets\adminLte\datatables\jquery.dataTables.js" />
+    <Content Include="Assets\adminLte\datatables\jquery.dataTables.min.js" />
     <Content Include="Assets\adminLte\img\AdminLTELogo.png" />
     <Content Include="Assets\adminLte\img\icons.png" />
     <Content Include="Assets\adminLte\img\user1-128x128.jpg" />

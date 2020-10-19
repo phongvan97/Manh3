@@ -12,7 +12,7 @@ using Microsoft.AspNet.Identity;
 
 namespace LamDep.Areas.Identity.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class PostsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -21,6 +21,11 @@ namespace LamDep.Areas.Identity.Controllers
         public ActionResult Index()
         {
             var posts = db.Posts.Include(p => p.Author).Include(p => p.Category).Where(p => !p.IsDeleted);
+            if (!User.IsInRole("Admin"))
+            {
+                var userId = User.Identity.GetUserId();
+                posts = posts.Where(p => p.AuthorId == userId);
+            }
             return View(posts.ToList());
         }
 
@@ -31,7 +36,7 @@ namespace LamDep.Areas.Identity.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Post post = db.Posts.Find(id);
+            Post post = db.Posts.Include(p => p.Category).FirstOrDefault(p => p.PostId == id);
             if (post == null)
             {
                 return HttpNotFound();
@@ -153,7 +158,7 @@ namespace LamDep.Areas.Identity.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Post post = db.Posts.Find(id);
+            Post post = db.Posts.Include(p => p.Category).FirstOrDefault(p => p.PostId == id);
             if (post == null)
             {
                 return HttpNotFound();
@@ -183,7 +188,7 @@ namespace LamDep.Areas.Identity.Controllers
                 {
                     string imgPath = Path.Combine(Server.MapPath("~/Assets/userImage"), imgName);
                     upload.SaveAs(imgPath);
-                    return  "/Assets/userImage/" + imgName ;
+                    return "/Assets/userImage/" + imgName;
                 }
                 else
                 {
